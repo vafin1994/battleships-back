@@ -6,6 +6,11 @@ export class AppController {
     constructor(private readonly appService: AppService) {
     }
 
+    @Get('/test')
+    test() {
+        return 'Server working!';
+    }
+
     @Post('/remoteUser')
     remoteUserAdded(@Body() body: { localUser: string, remoteUser: string }) {
         if (body.localUser && body.remoteUser) {

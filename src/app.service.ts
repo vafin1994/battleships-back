@@ -3,7 +3,8 @@ import {SocketGateway} from './socket.gateway';
 
 @Injectable()
 export class AppService {
-    constructor(private socket: SocketGateway) {}
+    constructor(private socket: SocketGateway) {
+    }
 
     remoteUserAdded(localUserSocketId: string, remoteUserSocketId: string) {
         const localUser = this.socket.freeConnectionsWithRoulette.find((user) => {
@@ -17,6 +18,7 @@ export class AppService {
         remoteUser.connection.join(roomName);
         localUser.roomName = roomName;
         remoteUser.roomName = roomName;
+        localUser.connection.broadcast.emit('remoteUserAdded');
         this.socket.sendMessageToRoom(roomName);
     }
 

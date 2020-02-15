@@ -50,13 +50,23 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect, 
         const keys = Object.keys(client.rooms);
         for (let i = 0; i < keys.length; i++) {
             if (keys[i] !== client.id) {
-                this.server.to(keys[i]).emit('messageToUser', message);
+                client.broadcast.to(keys[i]).emit('messageToUser', message);
+            }
+        }
+    }
+
+    @SubscribeMessage('gameMove')
+    handleGameMove(client: Socket, message: string) {
+        const keys = Object.keys(client.rooms);
+        for (let i = 0; i < keys.length; i++) {
+            if (keys[i] !== client.id) {
+                client.broadcast.to(keys[i]).emit('gameMove', message);
             }
         }
     }
 
     sendMessageToRoom(room) {
-        this.server.in(room).emit('messageToUser', room);
+        this.server.in(room).emit('messageToUser: ', room);
     }
 
 }
